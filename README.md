@@ -23,11 +23,13 @@ applications:
   instances: 1
   stack: cflinuxfs3
   random-route: true
-  buildpack: https://github.com/SpringerPE/cf-grafana-buildpack.git
+  buildpacks:
+  - https://github.com/SpringerPE/cf-confd-buildpack.git
+  - https://github.com/SpringerPE/cf-grafana-buildpack.git
   env:
     ADMIN_USER: admin
-    ADMIN_PASS: admin
-    SECRET_KEY: yUeEBtX7eTmh2ixzz0oHsNyyxYmebSat
+    ANOTHER_VAR: admin
+    OTHER_SECRET: blabal
 ```
 
 and run `cf push`
