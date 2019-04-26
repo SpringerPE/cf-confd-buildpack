@@ -44,8 +44,8 @@ launch() {
 
 
 run_confd_init() {
-    launch fg confd -confdir "${CONFD_DIR}" $@
+    launch fg confd -confdir "${CONFD_DIR}" ${CONFD_OPTS} $@
 }
 
 # run
-[ -d CONFD_DIR ] && run_confd_init $@
+[ -d "${CONFD_DIR}" ] && run_confd_init $@
