@@ -32,6 +32,21 @@ applications:
     OTHER_SECRET: blabal
 ```
 
+In the app root folder, create a `confd` directory with two sub-folders,
+one for the templates definition in `templates` folder and another 
+`conf.d` folder for the actions of how to render those templates.
+
+Example:
+
+```
+confd
+├── conf.d
+│   └── prometheus.toml
+├── Readme.md
+└── templates
+    └── prometheus.yml.template
+```
+
 and run `cf push`
 
 

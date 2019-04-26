@@ -6,7 +6,7 @@ set -x
 ROOT="/home/vcap"
 export CONFD_ROOT=$CONFD_ROOT
 export APP_ROOT="${ROOT}/app"
-export CONFD_DIR="${APP_ROOT}"
+export CONFD_DIR="${CONFD_DIR:-$APP_ROOT/confd}"
 export PATH=${PATH}:${CONFD_ROOT}
 export CONFD_OPTS=${CONFD_OPTS:-"-onetime -backend env"}
 
