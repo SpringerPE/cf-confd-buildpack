@@ -43,11 +43,11 @@ launch() {
 
 
 run_confd_init() {
-    if [[ "${MODE}" == "onetime" ]]
+    if [[ "${CONFD_MODE}" == "onetime" ]]
     then
-        launch "${MODE}" confd -onetime -confdir "${CONFD_DIR}" ${CONFD_OPTS} $@
+        launch "${CONFD_MODE}" confd -onetime -confdir "${CONFD_DIR}" ${CONFD_OPTS} $@
     else
-        launch "${MODE}" confd -watch -confdir "${CONFD_DIR}" ${CONFD_OPTS} $@
+        launch "${CONFD_MODE}" confd -watch -confdir "${CONFD_DIR}" ${CONFD_OPTS} $@
     fi
 }
 
