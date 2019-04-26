@@ -31,9 +31,14 @@ cp "${CACHE_DIR}/confd-${CONFD_VERSION}.bin" "${CONFD_DIR}/confd"
 chmod +x "${CONFD_DIR}/confd"
 
 echo "-----> Enabling confd"
+cp "${BUILDPACK_DIR}/confd.sh" "${BUILD_DIR}/.confd.sh"
+chmod +x "${BUILD_DIR}/.confd.sh"
 mkdir -p "$BUILD_DIR/.profile.d"
 cat <<EOF > "$BUILD_DIR/.profile.d/0000_confd.sh"
 export CONFD_ROOT="/home/vcap/deps/${DEPS_IDX}/confd"
 export PATH="\$PATH:\$CONFD_ROOT"
+
+# run!
+. ${HOME}/app/.confd.sh
 EOF
 
