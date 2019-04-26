@@ -39,6 +39,6 @@ export CONFD_ROOT="/home/vcap/deps/${DEPS_IDX}/confd"
 export PATH="\$PATH:\$CONFD_ROOT"
 
 # run!
-. ${HOME}/app/.confd.sh
+${HOME}/app/.confd.sh
 EOF
 
