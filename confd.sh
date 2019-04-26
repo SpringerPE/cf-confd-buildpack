@@ -4,47 +4,51 @@ set -x
 
 # See bin/finalize to check predefined vars
 ROOT="/home/vcap"
-export CONFD_ROOT=$CONFD_ROOT
 export APP_ROOT="${ROOT}/app"
-export CONFD_DIR="${CONFD_DIR:-$APP_ROOT/confd}"
+export CONFD_ROOT=$CONFD_ROOT
 export PATH=${PATH}:${CONFD_ROOT}
-export CONFD_OPTS=${CONFD_OPTS:-"-onetime -backend env"}
+
+# Settings
+export CONFD_MODE="${CONFD_MODE:-onetime}"
+export CONFD_OPTS=${CONFD_OPTS:-"-backend env"}
+export CONFD_DIR="${CONFD_DIR:-$APP_ROOT/confd}"
 
 ###
 
 # exec process in bg or fg
 launch() {
-    local background="${1}"
+    local mode="${1}"
     shift
+
+    local pid
+    local rvalue
     (
-        echo "Launching pid=$$: '$@'"
+        echo "Launching (${mode}) pid=$$: $@"
         {
             exec $@  2>&1;
         }
     ) &
     pid=$!
-    sleep 30
-    if ! ps -p ${pid} >/dev/null 2>&1; then
-        echo
-        echo "Error launching '$@'."
-        rvalue=1
+    if [[ "${mode}" == "onetime" ]]
+    then
+        wait ${pid} 2>/dev/null
+        rvalue=$?
+        echo "Finish pid=${pid}: ${rvalue}"
     else
-        if [[ -z "${background}" ]] && [[ "${background}" == "bg" ]]
-        then
-            wait ${pid} 2>/dev/null
-            rvalue=$?
-            echo "Finish pid=${pid}: ${rvalue}"
-        else
-            rvalue=0
-            echo "Background pid=${pid}: 0"
-        fi
+        rvalue=0
+        echo "Running background pid=${pid}"
     fi
     return ${rvalue}
 }
 
 
 run_confd_init() {
-    launch fg confd -confdir "${CONFD_DIR}" ${CONFD_OPTS} $@
+    if [[ "${MODE}" == "onetime" ]]
+    then
+        launch "${MODE}" confd -onetime -confdir "${CONFD_DIR}" ${CONFD_OPTS} $@
+    else
+        launch "${MODE}" confd -watch -confdir "${CONFD_DIR}" ${CONFD_OPTS} $@
+    fi
 }
 
 # run

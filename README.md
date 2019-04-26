@@ -50,6 +50,16 @@ confd
 and run `cf push`
 
 
+## Settings
+
+Parameters are set via environment these environment variables:
+
+```
+CONFD_MODE="${CONFD_MODE:-onetime}"
+CONFD_OPTS=${CONFD_OPTS:-"-backend env"}
+CONFD_DIR="${CONFD_DIR:-$APP_ROOT/confd}"
+```
+
 # Documentation
 
 https://github.com/kelseyhightower/confd/blob/master/docs/quick-start-guide.md
