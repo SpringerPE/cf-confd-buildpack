@@ -34,6 +34,6 @@ echo "-----> Enabling confd"
 mkdir -p "$BUILD_DIR/.profile.d"
 cat <<EOF > "$BUILD_DIR/.profile.d/0000_confd.sh"
 export CONFD_ROOT="/home/vcap/deps/${DEPS_IDX}/confd"
-export PATH=\$PATH:\$CONFD_ROOT"
+export PATH="\$PATH:\$CONFD_ROOT"
 EOF
 
