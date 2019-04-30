@@ -50,7 +50,8 @@ confd
 ```
 
 
-```prometheus.toml
+`prometheus.toml`:
+```
 [template]
 src = "prometheus.yml.template"
 dest = "/home/vcap/app/datasources/prometheus.yml"
@@ -61,7 +62,8 @@ keys = [
 ]
 ```
 
-```prometheus.yml.template
+`prometheus.yml.template`:
+```
 # config file version
 apiVersion: 1
 
