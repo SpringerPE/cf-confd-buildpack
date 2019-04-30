@@ -12,7 +12,8 @@ configuration file for the application
 
 https://github.com/kelseyhightower/confd/blob/master/docs/quick-start-guide.md
 
-First of all, this buildpack has no requirements at all you can create app folder,
+First of all, **this buildpack has no extra requirements at all, it is an intermediate
+buildpack which is only triggered if if finds a `confd` folder** you can create app folder,
 put a `manifest.yml` like this: 
 
 ```manifest.yml
@@ -27,9 +28,10 @@ applications:
   - https://github.com/SpringerPE/cf-confd-buildpack.git
   - https://github.com/SpringerPE/cf-grafana-buildpack.git
   env:
-    ADMIN_USER: admin
-    ANOTHER_VAR: admin
-    OTHER_SECRET: blabal
+    PROMETHEUS_USER: "hola"
+    PROMETHEUS_PASSWORD: "adios" 
+    PROMETHEUS_URL: "http://hola.com"
+    ...
 ```
 
 In the app root folder, create a `confd` directory with two sub-folders,
@@ -45,6 +47,45 @@ confd
 ├── Readme.md
 └── templates
     └── prometheus.yml.template
+```
+
+
+```prometheus.toml
+[template]
+src = "prometheus.yml.template"
+dest = "/home/vcap/app/datasources/prometheus.yml"
+keys = [
+    "/prometheus/password",
+    "/prometheus/user",
+    "/prometheus/url",
+]
+```
+
+```prometheus.yml.template
+# config file version
+apiVersion: 1
+
+# list of datasources that should be deleted from the database
+deleteDatasources:
+
+# list of datasources to insert/update depending
+# what's available in the database
+datasources:
+- name: Prometheus
+  type: prometheus
+  access: proxy
+  orgId: 1
+  url: "{{getv "/prometheus/url"}}"
+{{if exists "/prometheus/user"}}
+  basicAuth: true
+  basicAuthUser: "{{getv "/prometheus/user"}}"
+  basicAuthPassword: "{{getv "/prometheus/password"}}"
+{{else}}
+  basicAuth: false
+{{end}}
+  withCredentials: false
+  isDefault: false
+  editable: false
 ```
 
 and run `cf push`
