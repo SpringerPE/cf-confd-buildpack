@@ -4,8 +4,9 @@ Cloudfoundry buildpack to manage application configuration files using templates
 and data from etcd, consul, redis, vault, dns, environment variables
 
 The idea is run [confd](https://github.com/kelseyhightower/confd) as pre-start
-task with some template files which will be rendered by confd to get the final
-configuration file for the application
+task with some template files. The templates will be rendered using the variables
+provided by the backend (by default from environment vars) before the application
+starts, when application is launched it gets the proper configuration.
 
 
 ## Using it
